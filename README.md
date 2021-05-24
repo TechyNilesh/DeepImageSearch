@@ -27,7 +27,7 @@ If you are facing any VS C++ 14 related issue in windows during installation, ki
 
 ## How To Use?
 
-We have provided **Demo** folder under the *github reposetry*, you can find the example in the both **.py** and **.ipynb**  file. Following are the idel flow of the code:
+We have provided **Demo** folder under the *github repository*, you can find the example in the both **.py** and **.ipynb**  file. Following are the idel flow of the code:
 
 #### 1. Importing the Importent Classes
 There are three importent classes you need to load **LoadData** - for data loading, **Index** - for indexing the images to database/folder, **SearchImage** - For searching and Ploting the images
