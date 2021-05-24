@@ -16,7 +16,7 @@ setup(
           'pandas',
           'numpy',
           'tensorflow',
-          'tqdm'
+          'tqdm',
           'Pillow'
       ],
   classifiers=[
