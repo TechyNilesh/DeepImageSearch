@@ -1,14 +1,24 @@
 from distutils.core import setup
+import pathlib
+
+# The directory containing this file
+HERE = pathlib.Path(__file__).parent
+
+# The text of the README file
+README = (HERE / "README.md").read_text()
+
 setup(
   name = 'DeepImageSearch',         
   packages = ['DeepImageSearch'],
-  version = '0.5',
+  version = '0.6',
   license='MIT',        
   description = 'Deep Image Search is an AI-based image search engine that includes deep transfor learning features Extraction and tree-based vectorized search.',
+  long_description=README,
+  long_description_content_type="text/markdown",
   author = 'Nilesh Verma',                   
   author_email = 'me@nileshverma.com',     
-  url = 'https://github.com/TechyNilesh/DeepImageSearch',   
-  download_url = 'https://github.com/TechyNilesh/DeepImageSearch/archive/refs/tags/v_05.tar.gz',    
+  url = 'https://github.com/TechyNilesh/DeepImageSearch',
+  download_url = 'https://github.com/TechyNilesh/DeepImageSearch/archive/refs/tags/v_06.tar.gz',    
   keywords = ['Deep Image Search Engine', 'AI Image search', 'Image Search Python'],   
   install_requires=[        
           'annoy',
