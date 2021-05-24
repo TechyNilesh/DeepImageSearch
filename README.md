@@ -1,4 +1,4 @@
-# Deep Image Search -AI Based Image Search Engine
+# Deep Image Search - AI Based Image Search Engine
 ![Deep Search Engine](https://github.com/TechyNilesh/DeepImageSearch/blob/main/logo/deep%20image%20search%20logo%20New.png?raw=true)
 
 **Deep Image Search** is an AI-based image search engine that includes **deep transfor learning features Extraction** and **tree-based vectorized search**.
@@ -10,14 +10,14 @@
 ### [Nilesh Verma](https://nileshverma.com "Nilesh Verma")
 
 ## Features
-- Faster Search **O(logN) ** Complexity.
+- Faster Search **O(logN)** Complexity.
 - High Accurate Output Result.
 - Best for Implimenting on python based web application or APIs.
 - Best implementation for College students and freshers for project creation.
 
 ## Installation
 
-This library is compatible for both *windows* and *Linux system* you can just use **PIP command ** to install this library on your system:
+This library is compatible for both *windows* and *Linux system* you can just use **PIP command** to install this library on your system:
 
 ```shell
 pip install DeepImageSearch
@@ -27,7 +27,7 @@ If you are facing any VS C++ 14 related issue in windows during installation, ki
 
 ## How To Use?
 
-We have provided** Demo** folder under the *github reposetry*, you can find the example in the both **.py **and **.ipynb**  file.
+We have provided **Demo** folder under the *github reposetry*, you can find the example in the both **.py** and **.ipynb**  file.
 
 Following are the idel flow of the code:
 
@@ -104,4 +104,4 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-> **More cool features will be added in future. Feel free to give suggestions, report bugs and contribute.**
+## **More cool features will be added in future. Feel free to give suggestions, report bugs and contribute.**
