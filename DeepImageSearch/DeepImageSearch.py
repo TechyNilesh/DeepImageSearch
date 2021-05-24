@@ -99,7 +99,7 @@ class Index:
                 print("Meta data allready Present, Please Apply Search!")
                 print(os.listdir("meta-data-files/"))
 
-class SerachImage:
+class SearchImage:
     def __init__(self):
         self.image_data = pd.read_pickle(config.image_data_with_features_pkl)
         self.f = len(self.image_data['features'][0])
