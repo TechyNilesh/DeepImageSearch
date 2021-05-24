@@ -1,5 +1,5 @@
 # Deep Image Search - AI-Based Image Search Engine
-<center><img src="https://github.com/TechyNilesh/DeepImageSearch/blob/main/logo/deep%20image%20search%20logo%20New.png?raw=true" alt="Brain+Machine" height="156" width="250"></center></b></b>
+<p align="center"><img src="https://github.com/TechyNilesh/DeepImageSearch/blob/main/logo/deep%20image%20search%20logo%20New.png?raw=true" alt="Brain+Machine" height="156" width="250"></p>
 
 **Deep Image Search** is an AI-based image search engine that includes **deep transfer learning features Extraction** and **tree-based vectorized search**
 
