@@ -1,11 +1,8 @@
 from distutils.core import setup
-import pathlib
+from os import path
 
 # The directory containing this file
-HERE = pathlib.Path(__file__).parent
-
-# The text of the README file
-README = (HERE / "README.md").read_text()
+here = path.abspath(path.dirname(__file__))
 
 setup(
   name = 'DeepImageSearch',         
@@ -13,8 +10,7 @@ setup(
   version = '0.6',
   license='MIT',        
   description = 'Deep Image Search is an AI-based image search engine that includes deep transfor learning features Extraction and tree-based vectorized search.',
-  long_description=README,
-  long_description_content_type="text/markdown",
+  long_description=open('README.rst', encoding="utf8").read(),
   author = 'Nilesh Verma',                   
   author_email = 'me@nileshverma.com',     
   url = 'https://github.com/TechyNilesh/DeepImageSearch',
