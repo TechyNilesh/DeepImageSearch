@@ -1,4 +1,4 @@
-import DeepImageSearch.config
+import DeepImageSearch.config as config
 import os
 import pandas as pd
 import matplotlib.pyplot as plt
