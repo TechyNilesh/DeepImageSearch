@@ -62,13 +62,13 @@ Searching operation is performed by the following method:
 
 ```python
 # for searching, you need to give the image path and the number of the similar image you want
-SerachImage().get_similar_images(image_path=image_list[0],number_of_images=5)
+SearchImage().get_similar_images(image_path=image_list[0],number_of_images=5)
 ```
 you can also plot some similar images for viewing purpose by following the code method:
 
 ```python
 # If you want to plot similar images you can use this method, It will plot 16 most similar images from the data index
-SerachImage().plot_similar_images(image_path = image_list[0])
+SearchImage().plot_similar_images(image_path = image_list[0])
 ```
 
 ## Complete Code
@@ -81,9 +81,9 @@ image_list = LoadData().from_folder(['images','wiki-images'])
 # For Faster Serching we need to index Data first, After Indexing all the meta data stored on the local path
 Index(image_list).Start()
 # for searching you need to give the image path and the number of similar image you want
-SerachImage().get_similar_images(image_path=image_list[0],number_of_images=5)
+SearchImage().get_similar_images(image_path=image_list[0],number_of_images=5)
 # If you want to plot similar images the you can use this method, It will plot 16 most similar images from the data index
-SerachImage().plot_similar_images(image_path = image_list[0])
+SearchImage().plot_similar_images(image_path = image_list[0])
 ```
 
 ## License
