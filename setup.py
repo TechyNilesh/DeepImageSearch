@@ -2,13 +2,13 @@ from distutils.core import setup
 setup(
   name = 'DeepImageSearch',         
   packages = ['DeepImageSearch'],
-  version = '0.3',
+  version = '0.5',
   license='MIT',        
   description = 'Deep Image Search is an AI-based image search engine that includes deep transfor learning features Extraction and tree-based vectorized search.',
   author = 'Nilesh Verma',                   
   author_email = 'me@nileshverma.com',     
   url = 'https://github.com/TechyNilesh/DeepImageSearch',   
-  download_url = 'https://github.com/TechyNilesh/DeepImageSearch/archive/refs/tags/v_03.tar.gz',    
+  download_url = 'https://github.com/TechyNilesh/DeepImageSearch/archive/refs/tags/v_05.tar.gz',    
   keywords = ['Deep Image Search Engine', 'AI Image search', 'Image Search Python'],   
   install_requires=[        
           'annoy',
