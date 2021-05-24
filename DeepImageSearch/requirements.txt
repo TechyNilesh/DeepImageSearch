@@ -1,0 +1,7 @@
+annoy==1.17.0
+matplotlib==3.3.4
+pandas==1.2.4
+numpy==1.20.2
+tensorflow==2.3.2
+tqdm==4.59.0
+Pillow==8.2.0
