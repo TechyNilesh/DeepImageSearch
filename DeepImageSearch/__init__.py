@@ -1,4 +1,2 @@
-from DeepImageSearch.DeepImageSearch import LoadData,Index,SerachImage
+from DeepImageSearch.DeepImageSearch import LoadData,Index,SearchImage
 
-LoadData = LoadData()
-SerachImage =  SerachImage()
