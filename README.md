@@ -46,7 +46,7 @@ For loading the images data we need to use the **LoadData** object, from there w
 # load the Images from the Folder (You can also import data from multiple folders in python list type)
 image_list = LoadData().from_folder(['images','wiki-images'])
 # Load data from CSV file
-image_list = LoadData().from_csv(csv_file_path='your_csv_file.csv',images_column_name='column_name)
+image_list = LoadData().from_csv(csv_file_path='your_csv_file.csv',images_column_name='column_name')
 ```
 ### 3. Indexing and Saving The File in Local Folder
 
