@@ -46,7 +46,7 @@ For loading the images data we need to use the **LoadData** object, from there w
 # load the Images from the Folder (You can also import data from multiple folders in python list type)
 image_list = LoadData().from_folder(['images','wiki-images'])
 # Load data from CSV file
-image_list = LoadData().from_csv(csv_file_path='your_csv_file.csv',images_column_name='column_name)
+image_list = LoadData().from_csv(csv_file_path='your_csv_file.csv',images_column_name='column_name')
 ```
 ### 3. Indexing and Saving The File in Local Folder
 
@@ -85,9 +85,22 @@ SearchImage().get_similar_images(image_path=image_list[0],number_of_images=5)
 # If you want to plot similar images the you can use this method, It will plot 16 most similar images from the data index
 SearchImage().plot_similar_images(image_path = image_list[0])
 ```
+## Citaion
+
+If you use DeepImageSerach in your research/Product, please cite the following GitHub Repository:
+
+```latex
+@misc{TechyNilesh/DeepImageSearch,
+  author = {VERMA, NILESH},
+  title = {Deep Image Search - AI-Based Image Search Engine},
+  year = {2021},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/TechyNilesh/DeepImageSearch}},
+}
+```
 
 ## License
-
 
 
     MIT License
