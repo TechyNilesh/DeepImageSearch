@@ -17,10 +17,6 @@
 - Best implementation for College students and freshers for project creation.
 - Applications are Images based E-commerce recommendation, Social media and other image-based platforms that want to implement image recommendation and search.
 
-## Documentaion
-
-https://github.com/TechyNilesh/DeepImageSearch/blob/main/Documents/Document.md
-
 ## Installation
 
 This library is compatible with both *windows* and *Linux system* you can just use **PIP command** to install this library on your system:
