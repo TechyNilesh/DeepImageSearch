@@ -1,11 +1,12 @@
 # Deep Image Search - AI-Based Image Search Engine
 <p align="center"><img src="https://github.com/TechyNilesh/DeepImageSearch/blob/main/logo/deep%20image%20search%20logo%20New.png?raw=true" alt="Brain+Machine" height="218" width="350"></p>
 
-**Deep Image Search** is an AI-based image search engine that includes **deep transfer learning features Extraction** and **tree-based vectorized search technique.**
+**Deep Image Search** is an AI-based image search engine that includes **ViT(Vision Transformer) based features Extraction** and **tree-based vectorized search technique.**
 
-![Generic badge](https://img.shields.io/badge/AI-Advance-green.svg) ![Generic badge](https://img.shields.io/badge/Python-v3-blue.svg) ![Generic badge](https://img.shields.io/badge/pip-v3-red.svg)  ![Generic badge](https://img.shields.io/badge/TensorFlow-v2-orange.svg) ![Generic badge](https://img.shields.io/badge/Annoy-latest-green.svg) [![Downloads](https://static.pepy.tech/personalized-badge/deepimagesearch?period=total&units=none&left_color=grey&right_color=green&left_text=Downloads)](https://pepy.tech/project/deepimagesearch)
+![Generic badge](https://img.shields.io/badge/AI-Advance-green.svg) ![Generic badge](https://img.shields.io/badge/Python-v3-blue.svg) ![Generic badge](https://img.shields.io/badge/pip-v3-red.svg)
+![Generic badge](https://img.shields.io/badge/ViT-Vision_Transformer-g.svg)   ![Generic badge](https://img.shields.io/badge/TorchVision-v0.15-orange.svg) ![Generic badge](https://img.shields.io/badge/Annoy-latest-green.svg) [![Downloads](https://static.pepy.tech/personalized-badge/deepimagesearch?period=total&units=none&left_color=grey&right_color=green&left_text=Downloads)](https://pepy.tech/project/deepimagesearch)
 
-<h2><img src="https://cdn2.iconfinder.com/data/icons/artificial-intelligence-6/64/ArtificialIntelligence9-512.png" alt="Brain+Machine" height="38" width="38"> Creators </h2>
+## Developed By
 
 ### [Nilesh Verma](https://nileshverma.com "Nilesh Verma")
 
@@ -54,7 +55,7 @@ For faster retrieval we are using tree-based indexing techniques for Images feat
 
 ```python
 # For Faster Serching we need to index Data first, After Indexing all the meta data stored on the local path
-Index(image_list).Start()
+Index(image_list).start()
 ```
 ### 3. Searching
 
@@ -67,8 +68,8 @@ SearchImage().get_similar_images(image_path=image_list[0],number_of_images=5)
 you can also plot some similar images for viewing purpose by following the code method:
 
 ```python
-# If you want to plot similar images you can use this method, It will plot 16 most similar images from the data index
-SearchImage().plot_similar_images(image_path = image_list[0])
+# If you want to plot similar images you can use this method, It will plot 6 most similar images from the data index
+SearchImage().plot_similar_images(image_path = image_list[0],number_of_images=6)
 ```
 
 ## Complete Code
@@ -79,15 +80,15 @@ from DeepImageSearch import Index,LoadData,SearchImage
 # load the Images from the Folder (You can also import data from multiple folder in python list type)
 image_list = LoadData().from_folder(['images','wiki-images'])
 # For Faster Serching we need to index Data first, After Indexing all the meta data stored on the local path
-Index(image_list).Start()
+Index(image_list).start()
 # for searching you need to give the image path and the number of similar image you want
 SearchImage().get_similar_images(image_path=image_list[0],number_of_images=5)
-# If you want to plot similar images the you can use this method, It will plot 16 most similar images from the data index
-SearchImage().plot_similar_images(image_path = image_list[0])
+# If you want to plot similar images the you can use this method, It will plot 6 most similar images from the data index
+SearchImage().plot_similar_images(image_path = image_list[0],number_of_images=6)
 ```
 ## Citaion
 
-If you use DeepImageSerach in your research/Product, please cite the following GitHub Repository:
+If you use DeepImageSerach in your Research/Product, please cite the following GitHub Repository:
 
 ```latex
 @misc{TechyNilesh/DeepImageSearch,
