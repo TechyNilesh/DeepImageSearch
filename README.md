@@ -1,5 +1,5 @@
 # Deep Image Search - AI-Based Image Search Engine
-<p align="center"><img src="https://github.com/TechyNilesh/DeepImageSearch/blob/main/logo/deep%20image%20search%20logo%20New.png?raw=true" alt="Brain+Machine" height="218" width="350"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/TechyNilesh/DeepImageSearch/786e96c48561d67be47dccbab2bc8debced414a3/images/deep%20image%20search%20logo%20New.png" alt="Deep+Image+Search+logo" height="218" width="350"></p>
 
 **Deep Image Search** is an AI-based image search engine that incorporates **ViT (Vision Transformer)** for feature extraction and utilizes a **tree-based vectorized search** technique.
 
@@ -73,7 +73,7 @@ SearchImage().plot_similar_images(image_path = image_list[0],number_of_images=6)
 ```
 ## Screenshot
 
-<p align="center"><img src="https://raw.githubusercontent.com/TechyNilesh/DeepImageSearch/786e96c48561d67be47dccbab2bc8debced414a3/images/deep%20image%20search%20logo%20New.png" alt="Brain+Machine" height="218" width="350"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/TechyNilesh/DeepImageSearch/786e96c48561d67be47dccbab2bc8debced414a3/images/Deep-Image-Search-Demo-Screenshot.png?" alt="Brain+Machine" height="auto" width="auto"></p>
 
 ## Citaion
 
