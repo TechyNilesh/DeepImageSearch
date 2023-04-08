@@ -14,7 +14,7 @@ setup(
   packages = ['DeepImageSearch'],
   version = '1.5',
   license='MIT',        
-  description = 'Deep Image Search is an AI-based image search engine that includes ViT(Vision Transformer) based features Extraction and tree-based vectorized search technique.',
+  description = 'Deep Image Search is an AI-based image search engine that incorporates ViT (Vision Transformer) for feature extraction and utilizes a tree-based vectorized search technique.',
   long_description=README,
   author = 'Nilesh Verma',                   
   author_email = 'me@nileshverma.com',     
