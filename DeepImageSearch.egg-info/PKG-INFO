@@ -1,12 +1,12 @@
 Metadata-Version: 2.1
 Name: DeepImageSearch
-Version: 1.5
+Version: 2.0
 Summary: Deep Image Search is an AI-based image search engine that incorporates ViT (Vision Transformer) for feature extraction and utilizes a tree-based vectorized search technique.
 Home-page: https://github.com/TechyNilesh/DeepImageSearch
 Author: Nilesh Verma
 Author-email: me@nileshverma.com
 License: MIT
-Download-URL: https://github.com/TechyNilesh/DeepImageSearch/archive/refs/tags/v_15.tar.gz
+Download-URL: https://github.com/TechyNilesh/DeepImageSearch/archive/refs/tags/v_20.tar.gz
 Keywords: Deep Image Search Engine,AI Image search,Image Search Python
 Platform: UNKNOWN
 Classifier: Development Status :: 5 - Production/Stable
