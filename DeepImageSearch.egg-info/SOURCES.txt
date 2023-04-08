@@ -1,0 +1,12 @@
+LICENSE.txt
+README.md
+setup.cfg
+setup.py
+DeepImageSearch/DeepImageSearch.py
+DeepImageSearch/__init__.py
+DeepImageSearch/config.py
+DeepImageSearch.egg-info/PKG-INFO
+DeepImageSearch.egg-info/SOURCES.txt
+DeepImageSearch.egg-info/dependency_links.txt
+DeepImageSearch.egg-info/requires.txt
+DeepImageSearch.egg-info/top_level.txt
