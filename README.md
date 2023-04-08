@@ -17,6 +17,10 @@
 - Best implementation for College students and freshers for project creation.
 - Applications are Images based E-commerce recommendation, Social media and other image-based platforms that want to implement image recommendation and search.
 
+## Documentaion
+
+https://github.com/TechyNilesh/DeepImageSearch/blob/main/Documents/Document.md
+
 ## Installation
 
 This library is compatible with both *windows* and *Linux system* you can just use **PIP command** to install this library on your system:
@@ -71,6 +75,11 @@ you can also plot some similar images for viewing purpose by following the code 
 # If you want to plot similar images you can use this method, It will plot 6 most similar images from the data index
 SearchImage().plot_similar_images(image_path = image_list[0],number_of_images=6)
 ```
+
+## Documentation
+
+This project aims to provide a powerful image search engine using deep learning techniques. To get started, please follow the link: [Read Full Documents](https://github.com/TechyNilesh/DeepImageSearch/blob/main/Documents/Document.md)
+
 ## Screenshot
 
 <p align="center"><img src="https://raw.githubusercontent.com/TechyNilesh/DeepImageSearch/786e96c48561d67be47dccbab2bc8debced414a3/images/Deep-Image-Search-Demo-Screenshot.png?" alt="Brain+Machine" height="auto" width="auto"></p>
