@@ -5,4 +5,5 @@ numpy
 torch
 tqdm
 Pillow
-timmtorchvision
+timm
+torchvision

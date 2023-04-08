@@ -12,7 +12,7 @@ setup(
   long_description_content_type="text/markdown",
   name = 'DeepImageSearch',         
   packages = ['DeepImageSearch'],
-  version = '2.0',
+  version = '2.1',
   license='MIT',        
   description = 'Deep Image Search is an AI-based image search engine that incorporates ViT (Vision Transformer) for feature extraction and utilizes a tree-based vectorized search technique.',
   long_description=README,
@@ -29,7 +29,7 @@ setup(
           'torch',
           'tqdm',
           'Pillow',
-          'timm'
+          'timm',
           'torchvision'
       ],
   classifiers=[
