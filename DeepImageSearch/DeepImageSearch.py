@@ -175,7 +175,7 @@ class Index:
         print("Saved the Indexed File:"+"[meta-data-files/image_features_vectors.ann]")
         t.save(config.image_features_vectors_ann)
 
-    def start(self):
+    def start(self, skip_cmd_input=False):
         """
         Starts the feature extraction and indexing process.
         """
@@ -183,14 +183,18 @@ class Index:
             data = self.start_feature_extraction()
             self.start_indexing(data)
         else:
-            print("Metadata and Features are already present, Do you want Extract Again? Enter yes or no")
-            flag  = str(input())
-            if flag.lower() == 'yes':
+            if skip_cmd_input:
                 data = self.start_feature_extraction()
                 self.start_indexing(data)
             else:
-                print("Meta data already Present, Please Apply Search!")
-                print(os.listdir("meta-data-files/"))
+                print("Metadata and Features are already present, Do you want Extract Again? Enter yes or no")
+                flag  = str(input())
+                if flag.lower() == 'yes':
+                    data = self.start_feature_extraction()
+                    self.start_indexing(data)
+                else:
+                    print("Meta data already Present, Please Apply Search!")
+                    print(os.listdir("meta-data-files/"))
 
 class SearchImage:
     def __init__(self):
