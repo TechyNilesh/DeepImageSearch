@@ -66,7 +66,7 @@ This project aims to provide a powerful image search engine using deep learning 
 
 ## Screenshot
 
-<p align="center"><img src="https://raw.githubusercontent.com/TechyNilesh/DeepImageSearch/786e96c48561d67be47dccbab2bc8debced414a3/images/Deep-Image-Search-Demo-Screenshot.png?" alt="Brain+Machine" height="auto" width="auto"></p>
+<p align="center"><img src="https://github.com/TechyNilesh/DeepImageSearch/blob/c2a5e511662adade6ddece9be67167fe3f96cc4c/images/Deep-Image-Search-Demo-Screenshot.png?raw=true" alt="Brain+Machine" height="auto" width="auto"></p>
 
 ## Citaion
 
