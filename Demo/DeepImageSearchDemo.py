@@ -1,15 +1,28 @@
-# Importing the proper classes
-from DeepImageSearch import Index,LoadData,SearchImage
+### Sample Dataset Link:
+### https://www.kaggle.com/datasets/iamsouravbanerjee/animal-image-dataset-90-different-animals
 
-# load the Images from the Folder (You can also import data from multiple folders in python list type)
-image_list = LoadData().from_folder(['images','wiki-images'])
+from DeepImageSearch import Load_Data, Search_Setup
 
-# For Faster Serching we need to index Data first, After Indexing all the meta data stored on the local path
-Index(image_list).start()
+# Load images from a folder
+image_list = Load_Data().from_folder(['folder_path'])
 
-# for searching, you need to give the image path and the number of the similar image you want
-SearchImage().get_similar_images(image_path=image_list[0],number_of_images=5)
+# Set up the search engine
+st = Search_Setup(image_list=image_list, model_name='vgg19', pretrained=True, image_count=100)
 
-# If you want to plot similar images you can use this method, It will plot 16 most similar images from the data index
-SearchImage().plot_similar_images(image_list[0],number_of_images=6)
+# Index the images
+st.run_index()
 
+# Get metadata
+metadata = st.get_image_metadata_file()
+
+# Add images to the index
+st.add_images_to_index(['image_path_1', 'image_path_2'])
+
+# Get similar images
+st.get_similar_images(image_path='image_path', number_of_images=10)
+
+# Plot similar images
+st.plot_similar_images(image_path='image_path', number_of_images=9)
+
+# Update metadata
+metadata = st.get_image_metadata_file()

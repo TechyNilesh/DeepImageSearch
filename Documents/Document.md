@@ -1,124 +1,115 @@
-# Deep Image Search - AI-Based Image Search Engine
+# Deep Image Search - AI Based Image Search Engine
 
-Deep Image Search is an AI-based image search engine that incorporates ViT (Vision Transformer) for feature extraction and utilizes a tree-based vectorized search technique.
+Deep Image Search is a Python library that allows you to search for similar images in a dataset using deep learning techniques. It uses pre-trained models from the `timm` and Facebook `faiss` for indexing and searching images.
+
+## Features
+
+- **500+ Pre-trained Models:** With DeepImageSearch, you can import more than 500 pre-trained image and transformer models based on the `timm` library. 
+    - **Listing Models:** To list all the available models, you can use the following code snippet:
+
+        ```python
+        import timm
+        timm.list_models(pretrained=True)
+        ```
+
+- **Facebook FAISS Integration:** DeepImageSearch also integrates with Facebook's FAISS library, which allows for efficient similarity search and clustering of dense vectors. This enhances the performance of the search and provides better results.
 
 ## Installation
 
-To install the required dependencies, run:
-
 ```bash
-pip install -r requirements.txt
+pip install DeepImageSearch --upgrade
 ```
 
 ## Usage
 
-### 1. Import required modules
-
 ```python
-from DeepImageSearch import Index,LoadData,SearchImage
-from PIL import Image
+from DeepImageSearch import Load_Data, Search_Setup
 ```
 
-### 2. Load Data
+### Load Data
 
-Load data from single/multiple folders or a CSV file using the `LoadData` class.
-
-#### Example:
+Load data from single/multiple folders or a CSV file.
 
 ```python
-data_loader = LoadData()
+dl = Load_Data()
 
-# Load data from a single folder
-image_paths = data_loader.from_folder(["path/to/folder"])
+image_list = dl.from_folder(["folder1", "folder2"])
 
-# Load data from multiple folders
-image_paths = data_loader.from_folder(["path/to/folder1", "path/to/folder2"])
+# or
 
-# Load data from a CSV file
-image_paths = data_loader.from_csv("path/to/csv_file.csv", "images_column_name")
+image_list = dl.from_csv("image_data.csv", "image_paths")
 ```
 
-### 3. Feature Extraction
+### Initialize Search Setup
 
-Extract features using a transformer-based feature extraction model with the `FeatureExtractor` class.
-
-#### Example:
+Initialize the search setup with the list of images, model name, and other configurations.
 
 ```python
-feature_extractor = FeatureExtractor(model_name='vit_base_patch16_224', pretrained=True)
-
-# Extract features from a single image
-img = Image.open("path/to/image.jpg")
-features = feature_extractor.extract(img)
-
-# Extract features from a list of image paths
-image_features = feature_extractor.get_feature(image_paths)
+st = Search_Setup(image_list, model_name="vgg19", pretrained=True, image_count=None)
 ```
 
-### 4. Indexing
+### Index Images
 
-Index the extracted image features using the `Index` class.
-
-#### Example:
+Index images for searching.
 
 ```python
-indexer = Index(image_list=image_paths)
-indexer.start()
+st.run_index()
 ```
 
-### 5. Search for similar images
+### Add New Images to Index
 
-Search for similar images using the `SearchImage` class.
-
-#### Example:
+Add new images to the existing index.
 
 ```python
-searcher = SearchImage()
+new_image_paths = ["new_image1.jpg", "new_image2.jpg"]
 
-# Display a plot of the input image and its most similar images
-searcher.plot_similar_images("path/to/query_image.jpg", number_of_images=6)
+st.add_images_to_index(new_image_paths)
+```
 
-# Retrieve a dictionary of the most similar images to the input image
-similar_images = searcher.get_similar_images("path/to/query_image.jpg", number_of_images=10)
+### Plot Similar Images
+
+Display similar images in a grid.
+
+```python
+st.plot_similar_images("query_image.jpg", number_of_images=6)
+```
+
+### Get Similar Images
+
+Get a list of similar images.
+
+```python
+similar_images = search_setup.get_similar_images("query_image.jpg", number_of_images=10)
+```
+
+### Get Image Metadata File
+
+Get the metadata file containing image paths and features.
+
+```python
+metadata = st.get_image_metadata_file()
 ```
 
 ## Classes and Methods
 
-### LoadData
+### Load_Data
 
 A class for loading data from single/multiple folders or a CSV file.
 
-#### Methods
+- `from_folder(folder_list: list) -> list`: Loads image paths from a list of folder paths. The method iterates through all files in each folder and appends the path of the image files with extensions like .png, .jpg, .jpeg, .gif, and .bmp. The method returns a list of image paths.
+- `from_csv(csv_file_path: str, images_column_name: str) -> list`: Load images from a CSV file with the specified column name and return a list of image paths.
 
-- `from_folder(self, folder_list: list)`: Method to load data from a single folder path or a list of folder paths
-- `from_csv(self, csv_file_path: str, images_column_name: str)`: Method to load data from a CSV file with a column containing image paths
+### Search_Setup
 
-### FeatureExtractor
+A class to setup the search functionality.
 
-A class for extracting features using a transformer-based feature extraction model.
-
-#### Methods
-
-- `extract(self, img)`: Method to extract features from an image using the pre-trained model
-- `get_feature(self, image_data: list)`: Method to extract features from a list of image paths
-
-### Index
-
-A class for indexing the extracted image features.
-
-#### Methods
-
-- `start_feature_extraction(self)`: Extracts features from images and saves the data as a pickle file
-- `start_indexing(self, image_data)`: Indexes the extracted image features using Annoy
-- `start(self)`: Starts the feature extraction and indexing process
-
-### SearchImage
-
-A class for searching for similar images using the extracted features.
-
-#### Methods
-
-- `search_by_vector(self, v, n: int)`: Search for similar images using a given feature vector
-- `get_query_vector(self, image_path: str)`: Extract the feature vector for a given image
-- `plot_similar_images(self, image_path: str, number_of_images: int = 6)`: Display a plot of the input image and its most similar images
-- `get_similar_images(self, image_path: str, number_of_images: int = 10)`: Retrieve a dictionary of the most similar images to the input image
+- `Search_Setup(image_list: list, model_name='vgg19', pretrained=True, image_count: int = None)`: Initialize the search setup with the given image list, model name, and pretrained flag. Optionally, limit the number of images to use.
+    - `image_list`: A list of images paths.
+    - `model_name`: Name of the pre-trained model to be used for feature extraction. Default is 'vgg19'.
+    - `pretrained`: Boolean value indicating whether to use the pre-trained weights for the model. Default is True.
+    - `image_count`: Number of images to be considered for feature extraction. If not specified, all images will be used.
+- `run_index() -> info`: Extracts features from the dataset and indexes them. If the metadata and features are already present, the method prompts the user to confirm whether to re-extract the features or not. The method also loads the metadata and feature vectors from the saved pickle file.
+- `add_images_to_index(new_image_paths: list) -> info`: Adds new images to the existing index. The method loads the existing metadata and index and appends the feature vectors of the new images. The method saves the updated index to disk.
+- `plot_similar_images(image_path: str, number_of_images: int = 6) -> plot`: Display similar images in a grid for the given image path and number of images.
+- `get_similar_images(image_path: str, number_of_images: int = 10) -> dict`: Get a dictionary of similar images for the given image path and number of images.
+- `get_image_metadata_file() -> pd.DataFrame`: Get the metadata file containing image paths and features as a pandas DataFrame.

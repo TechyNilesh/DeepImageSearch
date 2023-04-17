@@ -1,9 +1,0 @@
-annoy
-matplotlib
-pandas
-numpy
-torch
-tqdm
-Pillow
-timm
-torchvision
