@@ -15,7 +15,7 @@ st.run_index()
 # Get metadata
 metadata = st.get_image_metadata_file()
 
-# Add images to the index
+# Add New images to the index
 st.add_images_to_index(['image_path_1', 'image_path_2'])
 
 # Get similar images
