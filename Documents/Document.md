@@ -1,6 +1,6 @@
 # Deep Image Search - AI Based Image Search Engine
 
-Deep Image Search is a Python library that allows you to search for similar images in a dataset using deep learning techniques. It uses pre-trained models from the `timm` and Facebook `faiss` for indexing and searching images.
+**DeepImageSearch** is a Python library for fast and accurate image search. It offers seamless integration with Python, GPU support, and advanced capabilities for identifying complex image patterns using the Vision Transformer models.
 
 ## Features
 

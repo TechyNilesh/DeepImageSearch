@@ -12,7 +12,6 @@ import timm
 from PIL import ImageOps
 import math
 import faiss
-import warnings
 
 class Load_Data:
     """A class for loading data from single/multiple folders or a CSV file"""
@@ -24,6 +23,14 @@ class Load_Data:
         pass
     
     def from_folder(self, folder_list: list):
+        """
+        Adds images from the specified folders to the image_list.
+
+        Parameters:
+        -----------
+        folder_list : list
+            A list of paths to the folders containing images to be added to the image_list.
+        """
         self.folder_list = folder_list
         image_path = []
         for folder in self.folder_list:
@@ -34,12 +41,35 @@ class Load_Data:
         return image_path
 
     def from_csv(self, csv_file_path: str, images_column_name: str):
+        """
+        Adds images from the specified column of a CSV file to the image_list.
+
+        Parameters:
+        -----------
+        csv_file_path : str
+            The path to the CSV file.
+        images_column_name : str
+            The name of the column containing the paths to the images to be added to the image_list.
+        """
         self.csv_file_path = csv_file_path
         self.images_column_name = images_column_name
         return pd.read_csv(self.csv_file_path)[self.images_column_name].to_list()
 
 class Search_Setup:
+    """ A class for setting up and running image similarity search."""
     def __init__(self, image_list: list, model_name='vgg19', pretrained=True, image_count: int = None):
+        """
+        Parameters:
+        -----------
+        image_list : list
+        A list of images to be indexed and searched.
+        model_name : str, optional (default='vgg19')
+        The name of the pre-trained model to use for feature extraction.
+        pretrained : bool, optional (default=True)
+        Whether to use the pre-trained weights for the chosen model.
+        image_count : int, optional (default=None)
+        The number of images to be indexed and searched. If None, all images in the image_list will be used.
+        """
         self.model_name = model_name
         self.pretrained = pretrained
         self.image_data = pd.DataFrame()
@@ -90,9 +120,9 @@ class Search_Setup:
                 feature = self._extract(img=Image.open(img_path))
                 features.append(feature)
             except:
-                # If there is an error, append None to the feature list
-                features.append(None)
-                continue
+               # If there is an error, append None to the feature list
+               features.append(None)
+               continue
         return features
 
     def _start_feature_extraction(self):
@@ -116,6 +146,9 @@ class Search_Setup:
         print("\033[94m Saved The Indexed File:" + f"[metadata-files/{self.model_name}/image_features_vectors.idx]")
 
     def run_index(self):
+        """
+        Indexes the images in the image_list and creates an index file for fast similarity search.
+        """
         if len(os.listdir(f'metadata-files/{self.model_name}')) == 0:
             data = self._start_feature_extraction()
             self._start_indexing(data)
@@ -132,6 +165,14 @@ class Search_Setup:
         self.f = len(self.image_data['features'][0])
 
     def add_images_to_index(self, new_image_paths: list):
+        """
+        Adds new images to the existing index.
+
+        Parameters:
+        -----------
+        new_image_paths : list
+            A list of paths to the new images to be added to the index.
+        """
         # Load existing metadata and index
         self.image_data = pd.read_pickle(config.image_data_with_features_pkl(self.model_name))
         index = faiss.read_index(config.image_features_vectors_idx(self.model_name))
@@ -173,6 +214,16 @@ class Search_Setup:
         return query_vector
 
     def plot_similar_images(self, image_path: str, number_of_images: int = 6):
+        """
+        Plots a given image and its most similar images according to the indexed image features.
+
+        Parameters:
+        -----------
+        image_path : str
+            The path to the query image to be plotted.
+        number_of_images : int, optional (default=6)
+            The number of most similar images to the query image to be plotted.
+        """
         input_img = Image.open(image_path)
         input_img_resized = ImageOps.fit(input_img, (224, 224), Image.LANCZOS)
         plt.figure(figsize=(5, 5))
@@ -199,11 +250,29 @@ class Search_Setup:
         plt.show(fig)
 
     def get_similar_images(self, image_path: str, number_of_images: int = 10):
+        """
+        Returns the most similar images to a given query image according to the indexed image features.
+
+        Parameters:
+        -----------
+        image_path : str
+            The path to the query image.
+        number_of_images : int, optional (default=10)
+            The number of most similar images to the query image to be returned.
+        """
         self.image_path = image_path
         self.number_of_images = number_of_images
         query_vector = self._get_query_vector(self.image_path)
         img_dict = self._search_by_vector(query_vector, self.number_of_images)
         return img_dict
     def get_image_metadata_file(self):
+        """
+        Returns the metadata file containing information about the indexed images.
+
+        Returns:
+        --------
+        DataFrame
+            The Panda DataFrame of the metadata file.
+        """
         self.image_data = pd.read_pickle(config.image_data_with_features_pkl(self.model_name))
         return self.image_data
