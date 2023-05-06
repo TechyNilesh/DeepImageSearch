@@ -1,1 +1,1 @@
-from DeepImageSearch.DeepImageSearch import Load_Data,Search_Setup
+from DeepImageSearch.DeepImageSearch import Load_Data, Search_Setup
