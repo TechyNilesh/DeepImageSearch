@@ -83,9 +83,9 @@ class Search_Setup:
             try:
                 os.makedirs(f'metadata-files/{self.model_name}')
             except Exception as e:
-                pass
-                #print(f'\033[91m file already exists: metadata-files/{self.model_name}')
-
+                # Handle the exception
+                print(f'\033[91m An error occurred while creating the directory: metadata-files/{self.model_name}')
+                print(f'\033[91m  Error Details: {e}')
         # Load the pre-trained model and remove the last layer
         print("\033[91m Please Wait Model Is Loading or Downloading From Server!")
         base_model = timm.create_model(self.model_name, pretrained=self.pretrained)
