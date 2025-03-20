@@ -22,16 +22,16 @@ setup(
   download_url = 'https://github.com/TechyNilesh/DeepImageSearch/archive/refs/tags/v_25.tar.gz',    
   keywords = ['Deep Image Search Engine', 'AI Image search', 'Image Search Python'],   
   install_requires=[        
-          'faiss_cpu',
-          'torch',
-          'torchvision',
-          'matplotlib',
-          'pandas',
-          'numpy',
-          'tqdm',
-          'Pillow',
-          'timm'
-      ],
+    'faiss_cpu>=1.7.3,<1.8.0',
+    'torch>=2.0.0,<2.1.0',
+    'torchvision>=0.15.1,<0.16.0',
+    'matplotlib>=3.5.2,<3.6.0',
+    'pandas>=1.4.3,<1.5.0',
+    'numpy>=1.24.2,<1.25.0',
+    'tqdm>=4.65.0,<5.0.0',
+    'Pillow>=9.5.0,<10.0.0',
+    'timm>=0.6.13,<0.7.0'
+  ],
   classifiers=[
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Developers', 
