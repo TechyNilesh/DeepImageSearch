@@ -191,6 +191,69 @@ class TimmEmbedding(BaseEmbedding):
         return np.vstack(all_features).astype(np.float32)
 
 
+class CustomEmbedding(BaseEmbedding):
+    """
+    Custom embedding using any user-provided feature extractor.
+
+    Accepts a callable that takes a PIL Image and returns a 1-D numpy array
+    (or list/tensor). Works with ONNX, TorchScript, TensorFlow, sklearn,
+    or any custom model.
+
+    Parameters
+    ----------
+    extract_fn : callable
+        Function that takes a PIL.Image and returns a feature vector
+        (numpy array, list, or tensor). Must return the same dimension
+        for every image.
+    dimension : int
+        Output dimension of the feature vector.
+    name : str
+        Name for this embedding (used in logging/metadata).
+
+    Examples
+    --------
+    # ONNX model
+    import onnxruntime as ort
+    session = ort.InferenceSession("model.onnx")
+
+    def my_extractor(img):
+        arr = np.array(img.resize((224, 224))).astype(np.float32)
+        arr = arr.transpose(2, 0, 1)[None] / 255.0
+        return session.run(None, {"input": arr})[0].flatten()
+
+    emb = CustomEmbedding(extract_fn=my_extractor, dimension=512)
+    engine = SearchEngine(model_name="clip-vit-b-32")  # ignored
+    engine.embedding = emb  # override
+
+    # Or use directly with core modules
+    from DeepImageSearch.core.indexer import Indexer
+    from DeepImageSearch.vectorstores.faiss_store import FAISSStore
+
+    store = FAISSStore(dimension=512)
+    indexer = Indexer(embedding=emb, vector_store=store)
+    indexer.index(image_paths)
+    """
+
+    supports_text = False
+
+    def __init__(self, extract_fn: callable, dimension: int, name: str = "custom"):
+        self.extract_fn = extract_fn
+        self.dimension = dimension
+        self.name = name
+        logger.info(f"CustomEmbedding loaded — name={name}, dimension={dimension}")
+
+    def embed_images(self, images: List[Image.Image]) -> np.ndarray:
+        features = []
+        for img in images:
+            feat = self.extract_fn(img.convert("RGB"))
+            feat = np.asarray(feat, dtype=np.float32).flatten()
+            norm = np.linalg.norm(feat)
+            if norm > 0:
+                feat = feat / norm
+            features.append(feat)
+        return np.vstack(features).astype(np.float32)
+
+
 # ── Factory ────────────────────────────────────────────────────────────────────
 
 # Common presets mapping friendly names to open_clip (model, pretrained) tuples
