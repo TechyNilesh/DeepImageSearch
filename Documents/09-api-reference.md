@@ -83,6 +83,21 @@ TimmEmbedding(model_name="vgg19", pretrained=True, image_size=224, device=None, 
 
 Properties: `dimension: int`, `supports_text: bool = False`
 
+## CustomEmbedding
+
+`DeepImageSearch.core.embeddings.CustomEmbedding`
+
+```python
+CustomEmbedding(extract_fn: callable, dimension: int, name: str = "custom")
+```
+
+| Method | Returns | Description |
+|---|---|---|
+| `embed_images(images: List[Image])` | `np.ndarray` | (N, D) image embeddings |
+| `embed_image(image: Image)` | `np.ndarray` | Single image vector |
+
+Properties: `dimension: int`, `supports_text: bool = False`
+
 ---
 
 ## Indexer
