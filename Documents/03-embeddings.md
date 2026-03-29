@@ -115,6 +115,90 @@ emb = TimmEmbedding(
 vector = emb.embed_image(img)  # image only, no text support
 ```
 
+### CustomEmbedding
+
+Use any custom model (ONNX, TorchScript, TensorFlow, sklearn, etc.) as a feature extractor. Just pass a callable that takes a PIL Image and returns a feature vector.
+
+```python
+from DeepImageSearch import CustomEmbedding
+
+# Example: ONNX model
+import onnxruntime as ort
+import numpy as np
+
+session = ort.InferenceSession("my_model.onnx")
+
+def onnx_extractor(img):
+    arr = np.array(img.resize((224, 224))).astype(np.float32)
+    arr = arr.transpose(2, 0, 1)[None] / 255.0
+    return session.run(None, {"input": arr})[0].flatten()
+
+emb = CustomEmbedding(extract_fn=onnx_extractor, dimension=512, name="my-onnx-model")
+```
+
+```python
+# Example: TorchScript model
+import torch
+
+scripted_model = torch.jit.load("model.pt")
+scripted_model.eval()
+
+def torchscript_extractor(img):
+    from torchvision import transforms
+    t = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+    ])
+    with torch.no_grad():
+        return scripted_model(t(img).unsqueeze(0)).squeeze().numpy()
+
+emb = CustomEmbedding(extract_fn=torchscript_extractor, dimension=512)
+```
+
+```python
+# Example: TensorFlow / Keras model
+import tensorflow as tf
+import numpy as np
+
+tf_model = tf.keras.applications.ResNet50(weights="imagenet", include_top=False, pooling="avg")
+
+def tf_extractor(img):
+    arr = np.array(img.resize((224, 224))).astype(np.float32)[None]
+    arr = tf.keras.applications.resnet50.preprocess_input(arr)
+    return tf_model.predict(arr, verbose=0).flatten()
+
+emb = CustomEmbedding(extract_fn=tf_extractor, dimension=2048, name="resnet50-tf")
+```
+
+#### Using CustomEmbedding with SearchEngine
+
+```python
+from DeepImageSearch import SearchEngine, CustomEmbedding
+from DeepImageSearch.core.indexer import Indexer
+from DeepImageSearch.core.searcher import Searcher
+from DeepImageSearch.vectorstores.faiss_store import FAISSStore
+
+emb = CustomEmbedding(extract_fn=my_extractor, dimension=512)
+store = FAISSStore(dimension=512)
+
+indexer = Indexer(embedding=emb, vector_store=store)
+searcher = Searcher(embedding=emb, vector_store=store)
+
+indexer.index(image_paths)
+results = searcher.search_by_image("query.jpg", k=5)
+```
+
+#### Parameters
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `extract_fn` | `callable` | required | Function: PIL Image -> feature vector (numpy array, list, or tensor) |
+| `dimension` | `int` | required | Output dimension of the feature vector |
+| `name` | `str` | `"custom"` | Name for logging and metadata |
+
+Properties: `dimension: int`, `supports_text: bool = False`
+
 ## Device Selection
 
 The library auto-detects the best available device:
