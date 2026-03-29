@@ -2,223 +2,143 @@
 
 All notable changes to DeepImageSearch will be documented in this file.
 
-## [Unreleased] - Code Review Fixes
+---
 
-### Critical Bug Fixes
+## [3.0.0] - 2026-03-29
 
-#### Fixed directory existence check bug
-- **Issue**: Line 82 used `if f'metadata-files/{self.model_name}' not in os.listdir()` which would fail
-- **Fix**: Now uses `os.path.exists()` for proper directory checking
-- **Impact**: Prevents crashes when checking for metadata directories
-
-#### Removed blocking input() call
-- **Issue**: Line 157 used `input()` which blocked in automated/production environments
-- **Fix**: Replaced with `force_reindex` parameter (default: False)
-- **Impact**: Library now works in APIs, scripts, and automated pipelines
-- **Breaking Change**: `run_index()` no longer prompts user interactively
-
-#### Fixed silent error handling
-- **Issue**: Lines 122-125 used bare `except:` clause that caught all errors silently
-- **Fix**: Now uses specific exceptions (FileNotFoundError, IOError) with proper logging
-- **Impact**: Errors are now visible and debuggable
+### Complete rewrite for the agentic RAG / LLM era.
 
 ### New Features
 
-#### Configurable image size
-- **Added**: `image_size` parameter (default: 224) to `Search_Setup.__init__()`
-- **Benefit**: Support for models requiring different input sizes (384x384, 512x512, etc.)
+#### Text-to-Image Search
+- Search images using natural language queries (e.g. "a red car parked near a lake")
+- Powered by CLIP/SigLIP/EVA-CLIP multimodal embeddings via open_clip
+- 8 CLIP presets: `clip-vit-b-32`, `clip-vit-b-16`, `clip-vit-l-14`, `clip-vit-l-14-336`, `clip-vit-bigg-14`, `eva-clip-vit-b-16`, `siglip-vit-b-16`, `siglip-vit-l-16`
 
-#### Multiple FAISS index types
-- **Added**: `index_type` parameter with options: 'flat', 'ivf', 'hnsw'
-  - `flat`: Exact search (default, backward compatible)
-  - `ivf`: Faster approximate search for large datasets (100k+ images)
-  - `hnsw`: Graph-based approximate search
-- **Benefit**: Better performance and scalability for large image collections
+#### Hybrid Search
+- Combine text and image queries with configurable weight fusion
+- `engine.search("outdoor scene", image_query="photo.jpg", mode="hybrid", text_weight=0.6)`
 
-#### GPU support
-- **Added**: `use_gpu` parameter (default: False) to `Search_Setup.__init__()`
-- **Benefit**: Faster feature extraction when GPU is available
+#### LLM-Powered Image Captioning
+- Auto-generate captions during indexing using any OpenAI SDK-compatible vision LLM
+- Works with OpenAI, Gemini, Claude, Ollama, Together AI, Groq, vLLM, or any compatible endpoint
+- Just provide `model`, `api_key`, `base_url` -- no provider-specific code
+- Structured metadata extraction (JSON) with objects, scene, colors, tags
 
-#### Configurable metadata directory
-- **Added**: `metadata_dir` parameter (default: 'metadata-files')
-- **Benefit**: Allows custom storage locations for index files
+#### Image Records & Metadata Storage
+- Every indexed image tracked as a structured `ImageRecord` (like a database row)
+- Fields: `image_id`, `image_index`, `image_name`, `image_path`, `caption`, `indexed_at`, `extra`
+- Schema maps directly to SQL tables
+- **JsonMetadataStore** (default) -- saves `image_records.json` locally
+- **PostgresMetadataStore** -- production-grade PostgreSQL backend with indexes and upserts
+- Custom backends via `BaseMetadataStore` abstract class
+- `engine.get_records()` and `engine.get_record(id)` for querying
 
-### Performance Improvements
+#### Multiple Vector Store Backends
+- **FAISS** (default) -- flat, ivf, hnsw index types with metadata sidecar
+- **ChromaDB** -- persistent, with native metadata filtering
+- **Qdrant** -- production-grade with in-memory, local, or remote server modes
+- Pluggable via `BaseVectorStore` abstract interface
 
-#### Batch processing for indexing
-- **Change**: Features now added to FAISS index in batches (default: 1000)
-- **Benefit**: Reduced memory usage for large datasets
+#### Agentic Integration
+- **MCP Server** -- expose image search as tools for Claude Code / Claude Desktop
+  - CLI: `deep-image-search-mcp --index-path ./my_index`
+  - Tools: `search_images`, `get_index_info`
+- **LangChain Tool** -- `create_langchain_tool()` returns a `StructuredTool`
+- **Generic Tool** -- `ImageSearchTool` callable with function calling schema
 
-#### Efficient bulk image addition
-- **Change**: `add_images_to_index()` now processes in batches (default: 100)
-- **Benefit**: Significantly faster when adding many images at once
+#### Folder Path Indexing
+- `engine.index("./photos")` -- pass a folder path directly
+- `engine.index(["img1.jpg", "img2.jpg"])` -- or a list of paths
+- `engine.index("single.jpg")` -- or a single file
+- Auto-loads images using `Load_Data.from_folder()` internally
 
-#### IVF index training
-- **Change**: When using IVF index, automatically trains with optimal cluster count
-- **Benefit**: Better search accuracy vs speed tradeoff
+#### SearchEngine Unified API
+- Single `SearchEngine` class wraps everything: embeddings, indexing, search, captioning, persistence
+- `engine.search()` auto-detects query type (text vs image path vs PIL Image vs numpy vector)
+- `engine.info()`, `engine.count`, `engine.supports_text_search` properties
+- `engine.save()` / `engine.load()` for full persistence
 
-#### torch.no_grad() for inference
-- **Change**: Added `with torch.no_grad()` during feature extraction
-- **Benefit**: Reduced memory usage during inference
+### Architecture Changes
 
-### Code Quality Improvements
+#### New modular package structure
+```
+DeepImageSearch/
+├── core/embeddings.py      -- CLIP/SigLIP/EVA-CLIP + timm
+├── core/indexer.py          -- batch indexing pipeline
+├── core/searcher.py         -- text/image/hybrid search
+├── core/captioner.py        -- OpenAI SDK LLM captioning
+├── vectorstores/faiss_store.py
+├── vectorstores/chroma_store.py
+├── vectorstores/qdrant_store.py
+├── metadatastore/json_store.py
+├── metadatastore/postgres_store.py
+├── agents/mcp_server.py
+├── agents/langchain_tool.py
+├── agents/tool_interface.py
+├── data/loader.py
+├── search_engine.py         -- unified high-level API
+└── DeepImageSearch.py       -- v2 backward-compatible shim
+```
 
-#### Comprehensive input validation
-- **Added**: Validation for all user inputs
-  - `image_list` cannot be empty or None
-  - `image_count` must be positive integer
-  - `image_size` must be positive integer
-  - `index_type` must be valid option
-  - File paths validated before processing
-- **Benefit**: Clear error messages instead of cryptic failures
+#### Removed
+- `setup.py` -- replaced by `pyproject.toml` with hatchling
+- `config.py` -- no longer needed
+- `pandas` dependency -- replaced with `csv` stdlib for data loading
+- Old 638-line monolithic `DeepImageSearch.py` -- replaced with 160-line thin shim delegating to v3 modules
+- `torch.autograd.Variable` usage -- modern PyTorch doesn't need it
 
-#### Professional logging system
-- **Change**: Replaced print statements with Python logging module
-- **Format**: `%(asctime)s - %(name)s - %(levelname)s - %(message)s`
-- **Levels**: INFO for normal operations, WARNING for issues, ERROR for failures
-- **Benefit**: Proper log management and no ANSI color code issues
+### Packaging & Dependencies
 
-#### Comprehensive type hints
-- **Added**: Type hints for all function parameters and return values
-- **Types used**: List, Dict, Optional, Union from typing module
-- **Benefit**: Better IDE support and code maintainability
+#### Modern packaging with uv support
+- `pyproject.toml` with hatchling build backend
+- Python 3.10+ required
+- Optional dependency groups: `[llm]`, `[chroma]`, `[qdrant]`, `[postgres]`, `[mcp]`, `[langchain]`, `[all]`
+- `uv pip install DeepImageSearch` or `pip install DeepImageSearch`
 
-#### Image file validation
-- **Change**: Image files validated with `Image.open().verify()` before adding
-- **Benefit**: Prevents processing of corrupted or non-image files
+#### Updated core dependencies
+- `torch >= 2.2.0` (was 2.0.0)
+- `torchvision >= 0.17.0` (was 0.15.1)
+- `open-clip-torch >= 2.26.0` (new)
+- `timm >= 1.0.0` (was 0.6.13)
+- `faiss-cpu >= 1.8.0` (was 1.7.3)
+- `numpy >= 1.26.0` (was 1.24.2)
+- `Pillow >= 10.0.0` (was 9.5.0)
+- `tqdm >= 4.66.0` (was 4.65.0)
+- `matplotlib >= 3.8.0` (was 3.5.2)
 
-#### Path validation and security
-- **Change**: All file paths validated before use
-  - Check file existence with `os.path.exists()`
-  - Verify files are regular files with `os.path.isfile()`
-  - Validate image extensions
-- **Benefit**: Better security and clearer error messages
-
-#### Better exception handling
-- **Change**: Specific exceptions with descriptive messages
-- **Example**: `FileNotFoundError`, `RuntimeError`, `ValueError`, `TypeError`
-- **Benefit**: Easier debugging and error handling
-
-### Documentation Improvements
-
-#### Enhanced docstrings
-- **Change**: All methods now have detailed docstrings with:
-  - Parameter descriptions
-  - Return value descriptions
-  - Examples where appropriate
-- **Benefit**: Better API documentation
-
-#### Type-annotated config functions
-- **Change**: config.py functions now have type hints and docstrings
-- **Benefit**: Clearer interface for configuration paths
+#### Removed core dependencies
+- `pandas` -- no longer a core dependency
 
 ### Backward Compatibility
 
-#### Maintained API compatibility
-- **Note**: All existing code should work without changes
-- **Exception**: `run_index()` no longer prompts interactively (use `force_reindex=True` instead)
+- v2 API (`Load_Data`, `Search_Setup`) still works unchanged
+- `Search_Setup` is now a thin wrapper delegating to v3 modules
+- Old `run_index()`, `get_similar_images()`, `plot_similar_images()` methods preserved
 
-#### Default values preserved
-- All new parameters have sensible defaults matching old behavior
-- `image_size=224` (same as hardcoded before)
-- `index_type='flat'` (same as before)
-- `use_gpu=False` (CPU-only as before)
-- `metadata_dir='metadata-files'` (same as before)
+### Documentation
 
-### Bug Fixes List
-
-1. ✅ Directory check using `os.path.exists()` instead of `os.listdir()`
-2. ✅ Removed blocking `input()` call
-3. ✅ Fixed bare `except:` clauses with specific exceptions
-4. ✅ Fixed hardcoded image size (224x224)
-5. ✅ Added batch processing for memory efficiency
-6. ✅ Fixed inefficient one-by-one image addition
-7. ✅ Fixed deprecated `DataFrame.append()` usage
-8. ✅ Added input validation throughout
-9. ✅ Replaced print with logging module
-10. ✅ Added comprehensive type hints
-11. ✅ Added file path validation
-12. ✅ Made metadata directory configurable
-13. ✅ Added FAISS index type options
-14. ✅ Added proper context managers for file operations
-15. ✅ Added GPU support with automatic detection
-16. ✅ Added support for more image formats (tiff, webp)
-
-### Migration Guide
-
-#### For users upgrading from previous versions:
-
-**No changes required** - All existing code continues to work!
-
-**Optional improvements** you can make:
-
-```python
-# Old code (still works):
-st = Search_Setup(image_list=image_list, model_name='vgg19')
-st.run_index()
-
-# New recommended code with improvements:
-st = Search_Setup(
-    image_list=image_list,
-    model_name='vgg19',
-    image_size=224,           # Now configurable
-    use_gpu=True,             # Use GPU if available
-    index_type='ivf',         # Faster for large datasets
-    metadata_dir='./my_index' # Custom location
-)
-st.run_index(force_reindex=False)  # No interactive prompt
-
-# For large datasets (100k+ images):
-st = Search_Setup(
-    image_list=image_list,
-    model_name='vit_base_patch16_224',
-    index_type='hnsw',  # Much faster approximate search
-    use_gpu=True
-)
-
-# Adding images is now much faster:
-st.add_images_to_index(new_images, batch_size=100)
-```
-
-### Technical Details
-
-#### FAISS Index Selection Guide
-
-- **IndexFlatL2 (flat)**:
-  - Exact nearest neighbor search
-  - Best for: < 10k images
-  - Search time: O(n)
-
-- **IndexIVFFlat (ivf)**:
-  - Approximate search with inverted file index
-  - Best for: 10k - 1M images
-  - Search time: O(log n) with training
-  - Trains with sqrt(n) clusters
-
-- **IndexHNSWFlat (hnsw)**:
-  - Graph-based approximate search
-  - Best for: 100k+ images
-  - Search time: O(log n)
-  - No training required
-
-### Known Issues
-
-None currently identified.
-
-### Next Steps / Future Improvements
-
-Potential future enhancements (not yet implemented):
-- HDF5 support as alternative to pickle for features
-- Progress checkpointing for long operations
-- Multi-GPU support
-- Asynchronous feature extraction
-- More flexible image preprocessing pipelines
+- 9 feature-specific documentation files in `Documents/`
+- 10 ready-to-run demo scripts in `Demo/`
+- Full API reference with all class/method signatures
+- Updated README with screenshots and examples table
 
 ---
 
-## Version History
+## [2.5] - Previous Release
 
-### [2.5] - Previous Release
-- Initial support for 500+ models via timm
+### Features
+- 500+ pre-trained models via timm
 - FAISS integration for similarity search
-- Basic indexing and search functionality
+- Basic image-to-image search
+- CSV and folder data loading
+- Matplotlib visualization
+
+### Bug Fixes (pre-3.0)
+- Fixed directory check using `os.path.exists()` instead of `os.listdir()`
+- Removed blocking `input()` call, replaced with `force_reindex` parameter
+- Fixed bare `except:` clauses with specific exceptions
+- Added batch processing for memory efficiency
+- Replaced print statements with logging module
+- Added comprehensive type hints and input validation
+- Added GPU support, configurable image size, multiple FAISS index types
