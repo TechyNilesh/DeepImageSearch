@@ -1,0 +1,1 @@
+from DeepImageSearch.agents.tool_interface import ImageSearchTool
