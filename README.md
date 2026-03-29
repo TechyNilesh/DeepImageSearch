@@ -3,7 +3,7 @@
 
 **DeepImageSearch** is a Python library for building AI-powered image search systems. It supports text-to-image search, image-to-image search, hybrid search, and LLM-powered captioning using CLIP/SigLIP/EVA-CLIP multimodal embeddings with FAISS/ChromaDB/Qdrant vector indexing. Built for the agentic RAG era with MCP server, LangChain tool, and PostgreSQL metadata storage out of the box.
 
-[![PyPI version](https://img.shields.io/pypi/v/DeepImageSearch.svg)](https://pypi.org/project/DeepImageSearch/) ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg) ![CLIP](https://img.shields.io/badge/CLIP-Multimodal-purple.svg) ![MCP](https://img.shields.io/badge/MCP-Agentic-orange.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![Downloads](https://static.pepy.tech/personalized-badge/deepimagesearch?period=total&units=none&left_color=grey&right_color=green&left_text=Downloads)](https://pepy.tech/project/deepimagesearch) [![GitHub stars](https://img.shields.io/github/stars/TechyNilesh/DeepImageSearch)](https://github.com/TechyNilesh/DeepImageSearch/stargazers) [![Last Commit](https://img.shields.io/github/last-commit/TechyNilesh/DeepImageSearch)](https://github.com/TechyNilesh/DeepImageSearch/commits/main)
+[![PyPI version](https://img.shields.io/pypi/v/DeepImageSearch.svg)](https://pypi.org/project/DeepImageSearch/) ![Python](https://img.shields.io/badge/Python-3.10+-blue.svg) ![CLIP](https://img.shields.io/badge/CLIP-Multimodal-purple.svg) ![MCP](https://img.shields.io/badge/MCP-Agentic-orange.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT) [![Downloads](https://static.pepy.tech/personalized-badge/deepimagesearch?period=total&units=none&left_color=grey&right_color=green&left_text=Downloads)](https://pepy.tech/project/deepimagesearch) [![Last Commit](https://img.shields.io/github/last-commit/TechyNilesh/DeepImageSearch)](https://github.com/TechyNilesh/DeepImageSearch/commits/main)
 
 ## Features
 
@@ -350,3 +350,13 @@ If you use DeepImageSearch in your Research/Product, please cite:
 ### Please do STAR the repository, if it helped you in any way.
 
 **Feel free to give suggestions, report bugs and contribute.**
+
+## Star History
+
+<a href="https://www.star-history.com/?repos=TechyNilesh%2FDeepImageSearch&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=TechyNilesh/DeepImageSearch&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=TechyNilesh/DeepImageSearch&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=TechyNilesh/DeepImageSearch&type=date&legend=top-left" />
+ </picture>
+</a>
