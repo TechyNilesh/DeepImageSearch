@@ -29,7 +29,7 @@ from DeepImageSearch.data.loader import Load_Data
 from DeepImageSearch.DeepImageSearch import Search_Setup
 
 # Core components (for advanced usage)
-from DeepImageSearch.core.embeddings import EmbeddingManager, CLIPEmbedding, TimmEmbedding
+from DeepImageSearch.core.embeddings import EmbeddingManager, CLIPEmbedding, TimmEmbedding, CustomEmbedding
 from DeepImageSearch.core.indexer import Indexer
 from DeepImageSearch.core.searcher import Searcher
 from DeepImageSearch.core.captioner import Captioner
@@ -58,6 +58,7 @@ __all__ = [
     "EmbeddingManager",
     "CLIPEmbedding",
     "TimmEmbedding",
+    "CustomEmbedding",
     "Indexer",
     "Searcher",
     "Captioner",
