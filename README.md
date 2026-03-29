@@ -1,5 +1,5 @@
 # Deep Image Search - Search Images with Text, Images & AI Agents
-<p align="center"><img src="https://raw.githubusercontent.com/TechyNilesh/DeepImageSearch/786e96c48561d67be47dccbab2bc8debced414a3/images/deep%20image%20search%20logo%20New.png" alt="Deep+Image+Search+logo" height="218" width="350"></p>
+<p align="center"><img src="images/deepimagesearch_logo.png" alt="Deep Image Search Logo" height="250"></p>
 
 **DeepImageSearch** is a Python library for building AI-powered image search systems. It supports text-to-image search, image-to-image search, hybrid search, and LLM-powered captioning using CLIP/SigLIP/EVA-CLIP multimodal embeddings with FAISS/ChromaDB/Qdrant vector indexing. Built for the agentic RAG era with MCP server, LangChain tool, and PostgreSQL metadata storage out of the box.
 
