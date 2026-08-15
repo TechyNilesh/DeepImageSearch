@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 DeepImageSearch — AI-powered image search with multimodal embeddings,
 text-to-image search, LLM captioning, and agentic RAG integration.
@@ -19,7 +21,13 @@ Usage:
     engine.plot_similar_images("query.jpg")
 """
 
-__version__ = "3.0.0"
+__version__ = "3.0.2"
+
+# Must run before torch or faiss is imported below — see DeepImageSearch/_openmp.py
+# for why macOS needs this and what the permanent fix is.
+from DeepImageSearch._openmp import configure_environment as _configure_environment
+
+_configure_environment()
 
 # Main API
 from DeepImageSearch.search_engine import SearchEngine

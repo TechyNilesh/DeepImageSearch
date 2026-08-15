@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 SearchEngine — high-level unified API for DeepImageSearch v3.
 

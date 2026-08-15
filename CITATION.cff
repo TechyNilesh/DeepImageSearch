@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+title: "DeepImageSearch: AI-Based Image Search Engine"
+message: "If you use this software, please cite it using these metadata."
+type: software
+authors:
+  - family-names: Verma
+    given-names: Nilesh
+    email: me@nileshverma.com
+repository-code: "https://github.com/TechyNilesh/DeepImageSearch"
+url: "https://github.com/TechyNilesh/DeepImageSearch"
+abstract: >-
+  DeepImageSearch is an AI-powered image search engine with multimodal
+  embeddings (CLIP, SigLIP, EVA-CLIP, timm), text-to-image and hybrid
+  search, pluggable vector stores (FAISS, ChromaDB, Qdrant), LLM
+  captioning, and agentic RAG integration via MCP and LangChain tools.
+keywords:
+  - image search
+  - multimodal embeddings
+  - CLIP
+  - vector search
+  - information retrieval
+  - machine learning
+license: MIT
+version: 3.0.2
+date-released: "2026-04-01"

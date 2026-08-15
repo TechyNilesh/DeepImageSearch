@@ -80,3 +80,29 @@ packages = ["DeepImageSearch"]
 [tool.ruff]
 target-version = "py310"
 line-length = 120
+
+[tool.ruff.lint]
+# Pinned explicitly so CI results do not drift as ruff's defaults change.
+# Import sorting ("I") is deliberately left out — it is pure churn on the
+# existing tree; add it with a one-off `ruff check --fix` when convenient.
+select = ["E", "F"]
+
+[tool.ruff.lint.per-file-ignores]
+# __init__.py files re-export the public API; those imports are intentional.
+"__init__.py" = ["F401"]
+"DeepImageSearch/__init__.py" = ["F401", "E402"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.coverage.run]
+source = ["DeepImageSearch"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "raise NotImplementedError",
+    "if TYPE_CHECKING:",
+]

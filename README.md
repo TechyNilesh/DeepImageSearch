@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/TechyNilesh/DeepImageSearch/main/images/deepimagesearch_logo.png" alt="Deep Image Search Logo" height="250"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/TechyNilesh/DeepImageSearch/main/images/deepimagesearch_logo.png" alt="Deep Image Search Logo" width="700"></p>
 
 **DeepImageSearch** is a Python library for building AI-powered image search systems. It supports text-to-image search, image-to-image search, hybrid search, and LLM-powered captioning using CLIP/SigLIP/EVA-CLIP multimodal embeddings with FAISS/ChromaDB/Qdrant vector indexing. Built for the agentic RAG era with MCP server, LangChain tool, and PostgreSQL metadata storage out of the box.
 
@@ -322,6 +322,17 @@ Ready-to-run demo scripts in the [`Demo/`](https://github.com/TechyNilesh/DeepIm
 ## Documentation
 
 For detailed documentation: [Read Full Documents](https://github.com/TechyNilesh/DeepImageSearch/blob/main/Documents/Document.md)
+
+## Development
+
+```bash
+pip install -e ".[dev]"
+pytest                                  # test suite (no model downloads)
+ruff check DeepImageSearch tests        # lint
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the full developer guide, including
+how to add a new vector store, metadata store, or embedding backend.
 
 ## Core Contributors
 

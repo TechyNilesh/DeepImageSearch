@@ -1,3 +1,2 @@
 # SPDX-License-Identifier: MIT
 # Copyright (c) 2021 Nilesh Verma
-from DeepImageSearch.data.loader import Load_Data

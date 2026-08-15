@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 from DeepImageSearch.vectorstores.base import BaseVectorStore
 from DeepImageSearch.vectorstores.faiss_store import FAISSStore
 

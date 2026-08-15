@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 Indexing pipeline: extract embeddings, optionally caption, store in vector DB + metadata store.
 """

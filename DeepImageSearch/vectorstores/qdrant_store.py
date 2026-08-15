@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """Qdrant-based vector store."""
 
 import logging
@@ -104,12 +106,23 @@ class QdrantStore(BaseVectorStore):
                 conditions.append(FieldCondition(key=key, match=MatchValue(value=value)))
             query_filter = Filter(must=conditions)
 
-        results = self.client.search(
-            collection_name=self.collection_name,
-            query_vector=query_vector.astype(np.float32).tolist(),
-            limit=k,
-            query_filter=query_filter,
-        )
+        vector = query_vector.astype(np.float32).tolist()
+
+        if hasattr(self.client, "query_points"):
+            # qdrant-client >= 1.10 — `search()` was deprecated and later removed.
+            results = self.client.query_points(
+                collection_name=self.collection_name,
+                query=vector,
+                limit=k,
+                query_filter=query_filter,
+            ).points
+        else:
+            results = self.client.search(
+                collection_name=self.collection_name,
+                query_vector=vector,
+                limit=k,
+                query_filter=query_filter,
+            )
 
         output = []
         for hit in results:

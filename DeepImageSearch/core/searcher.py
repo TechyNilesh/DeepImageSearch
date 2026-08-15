@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 Unified search engine supporting text, image, and hybrid queries.
 """

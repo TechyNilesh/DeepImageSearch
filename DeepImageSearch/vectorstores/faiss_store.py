@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """FAISS-based vector store with metadata support."""
 
 import json
@@ -8,9 +10,14 @@ from typing import Any, Dict, List, Optional
 import faiss
 import numpy as np
 
+from DeepImageSearch._openmp import configure_faiss
 from DeepImageSearch.vectorstores.base import BaseVectorStore
 
 logger = logging.getLogger(__name__)
+
+# Guards against a macOS segfault in FAISS's OpenMP routines when torch is also
+# loaded. No-op on other platforms and on healthy environments.
+configure_faiss(faiss)
 
 
 class FAISSStore(BaseVectorStore):
@@ -37,8 +44,12 @@ class FAISSStore(BaseVectorStore):
         if self.index_type == "flat":
             self.index = faiss.IndexFlatIP(dimension)  # inner product for cosine sim on normalised vectors
         elif self.index_type == "ivf":
-            quantizer = faiss.IndexFlatIP(dimension)
-            self.index = faiss.IndexIVFFlat(quantizer, dimension, 100, faiss.METRIC_INNER_PRODUCT)
+            # The quantizer must outlive this call: IndexIVFFlat stores a raw
+            # pointer to it without taking ownership, so letting it fall out of
+            # scope leaves the index with a dangling pointer and segfaults on
+            # the first train()/search(). Keep a Python reference alive.
+            self._quantizer = faiss.IndexFlatIP(dimension)
+            self.index = faiss.IndexIVFFlat(self._quantizer, dimension, 100, faiss.METRIC_INNER_PRODUCT)
         elif self.index_type == "hnsw":
             self.index = faiss.IndexHNSWFlat(dimension, 32, faiss.METRIC_INNER_PRODUCT)
         else:
@@ -121,6 +132,13 @@ class FAISSStore(BaseVectorStore):
         keep_mask = [i for i, _id in enumerate(self._ids) if _id not in ids_set]
 
         if len(keep_mask) == len(self._ids):
+            return
+
+        if not keep_mask:
+            # Everything was deleted — np.vstack would fail on an empty list
+            self._build_index(self.dimension)
+            self._ids = []
+            self._metadata = []
             return
 
         # Reconstruct all vectors
