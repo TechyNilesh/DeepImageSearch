@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """ChromaDB-based vector store."""
 
 import logging
@@ -49,9 +51,11 @@ class ChromaStore(BaseVectorStore):
         metadata: Optional[List[Dict[str, Any]]] = None,
     ) -> None:
         vectors = vectors.astype(np.float32)
-        # Chroma needs metadata values to be str, int, float, or bool
-        clean_metadata = []
+        # Chroma needs metadata values to be str, int, float, or bool, and it
+        # rejects empty dicts outright — so absent metadata must be sent as None.
+        clean_metadata = None
         if metadata:
+            clean_metadata = []
             for m in metadata:
                 clean = {}
                 for k, v in m.items():
@@ -59,9 +63,7 @@ class ChromaStore(BaseVectorStore):
                         clean[k] = v
                     else:
                         clean[k] = str(v)
-                clean_metadata.append(clean)
-        else:
-            clean_metadata = [{}] * len(ids)
+                clean_metadata.append(clean or None)
 
         # ChromaDB has a batch limit, chunk if needed
         batch_size = 5000
@@ -70,7 +72,7 @@ class ChromaStore(BaseVectorStore):
             self.collection.add(
                 ids=ids[i:end],
                 embeddings=vectors[i:end].tolist(),
-                metadatas=clean_metadata[i:end],
+                metadatas=clean_metadata[i:end] if clean_metadata else None,
             )
         logger.info(f"Added {len(ids)} vectors to ChromaDB")
 
@@ -90,7 +92,9 @@ class ChromaStore(BaseVectorStore):
         output = []
         if results["ids"] and results["ids"][0]:
             for idx, (id_, dist) in enumerate(zip(results["ids"][0], results["distances"][0])):
-                meta = results["metadatas"][0][idx] if results["metadatas"] else {}
+                # Chroma hands back None for records stored without metadata;
+                # the BaseVectorStore contract promises a dict.
+                meta = (results["metadatas"][0][idx] if results["metadatas"] else None) or {}
                 output.append({
                     "id": id_,
                     "score": 1.0 - dist,  # Chroma returns distance, convert to similarity

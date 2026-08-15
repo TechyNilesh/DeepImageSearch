@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 Embedding backends for DeepImageSearch.
 
@@ -8,7 +10,7 @@ Supports:
 
 import logging
 from abc import ABC, abstractmethod
-from typing import List, Optional, Union
+from typing import List, Optional
 
 import numpy as np
 import torch

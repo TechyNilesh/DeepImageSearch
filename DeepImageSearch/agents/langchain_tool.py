@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 LangChain tool wrapper for DeepImageSearch.
 
@@ -11,7 +13,7 @@ Usage:
 
 import json
 import logging
-from typing import Any, Dict, Optional
+from typing import Optional
 
 logger = logging.getLogger(__name__)
 
@@ -60,12 +62,17 @@ def create_langchain_tool(
         device=device,
     )
 
+    # Bound to a differently-named local: inside the class body below, the
+    # annotated assignment `k: int = ...` makes `k` local to that body, so
+    # referencing the parameter `k` directly there raises NameError.
+    default_k = k
+
     class SearchImagesInput(BaseModel):
         query: str = Field(description="Natural language query or image file path")
-        k: int = Field(default=k, description="Number of results to return")
+        k: int = Field(default=default_k, description="Number of results to return")
         mode: str = Field(default="auto", description="Search mode: 'text', 'image', or 'auto'")
 
-    def _search(query: str, k: int = 5, mode: str = "auto") -> str:
+    def _search(query: str, k: int = default_k, mode: str = "auto") -> str:
         results = search_tool(query=query, k=k, mode=mode)
         formatted = []
         for r in results:

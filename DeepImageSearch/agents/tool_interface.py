@@ -1,9 +1,11 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 Generic tool interface for DeepImageSearch that can be used by any agent framework.
 """
 
 import logging
-from typing import Any, Dict, List, Literal, Optional
+from typing import Any, Dict, List, Optional
 
 from DeepImageSearch.core.embeddings import EmbeddingManager
 from DeepImageSearch.core.searcher import Searcher
@@ -108,7 +110,10 @@ class ImageSearchTool:
                     "mode": {
                         "type": "string",
                         "enum": ["auto", "text", "image"],
-                        "description": "Search mode: 'text' for semantic search, 'image' for visual similarity, 'auto' to detect",
+                        "description": (
+                            "Search mode: 'text' for semantic search, "
+                            "'image' for visual similarity, 'auto' to detect"
+                        ),
                         "default": "auto",
                     },
                 },

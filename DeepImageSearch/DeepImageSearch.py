@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 Backward-compatible shim for DeepImageSearch v2 API.
 
@@ -7,7 +9,7 @@ will continue to work without changes.
 
 import logging
 import os
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
 
 from DeepImageSearch.data.loader import Load_Data
 from DeepImageSearch.core.embeddings import EmbeddingManager

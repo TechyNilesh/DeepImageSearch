@@ -4,6 +4,45 @@ All notable changes to DeepImageSearch will be documented in this file.
 
 ---
 
+## [Unreleased]
+
+### Fixed
+- **`index_type="ivf"` segfaulted the interpreter on every use.** Two causes:
+  the FAISS quantizer was garbage-collected while the index still pointed at it,
+  and FAISS's OpenMP k-means clashed with torch's runtime on macOS.
+- **macOS:** searching no longer aborts with `OMP: Error #15`. `torch` and
+  `faiss-cpu` vendor separate copies of `libomp.dylib`; DeepImageSearch now sets
+  `KMP_DUPLICATE_LIB_OK` at import and pins FAISS to one thread when it detects
+  the duplicate (see `DEEPIMAGESEARCH_FAISS_THREADS`). Import `DeepImageSearch`
+  before `torch`/`faiss` for it to take effect.
+- **`create_langchain_tool()` raised `NameError` on every call** — a pydantic
+  field shadowed the `k` parameter inside the class body, so the LangChain
+  integration could never be constructed.
+- **MCP server failed to start against mcp >= 2.0**, which renamed `FastMCP` to
+  `MCPServer`; both import paths are now supported.
+- **Qdrant search failed against qdrant-client >= 1.12**, which removed
+  `QdrantClient.search()` in favour of `query_points()`.
+- `ChromaStore.add()` rejected vectors added without metadata, and returned
+  `None` instead of `{}` for their metadata on search.
+- `FAISSStore.delete()` no longer raises `ValueError` when every vector is deleted.
+- `PostgresMetadataStore.__del__` no longer raises `AttributeError` when the
+  connection was never established.
+- `DeepImageSearch.__version__` now matches the packaged version (was `3.0.0`).
+
+### Added
+- Test suite (`tests/`, 337 tests, 98% coverage) covering every module: loader,
+  metadata stores, all four vector stores, embedding backends, captioner, agent
+  tools, the SearchEngine facade, and the v2 `Search_Setup` shim. No model
+  downloads and no servers — heavy dependencies are faked or run in-process.
+- GitHub Actions CI: lint, tests on Python 3.10–3.13 across Linux/macOS/Windows
+  with all extras installed and a 90% coverage floor, and a packaging check.
+- `CONTRIBUTING.md`, `CITATION.cff`, `.gitignore`.
+- `# SPDX-License-Identifier: MIT` header on every source file.
+
+### Removed
+- `setup.cfg`, which referenced a non-existent `README.rst`; packaging is
+  handled entirely by `pyproject.toml`.
+
 ## [3.0.0] - 2026-03-29
 
 ### Complete rewrite for the agentic RAG / LLM era.

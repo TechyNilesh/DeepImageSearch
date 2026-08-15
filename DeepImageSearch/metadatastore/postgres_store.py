@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 PostgreSQL-based metadata store.
 
@@ -188,8 +190,11 @@ class PostgresMetadataStore(BaseMetadataStore):
 
     def close(self) -> None:
         """Close the database connection."""
-        if self.conn and not self.conn.closed:
-            self.conn.close()
+        # getattr: __init__ can fail before self.conn exists (missing driver,
+        # bad connection string), and __del__ still runs on the partial object.
+        conn = getattr(self, "conn", None)
+        if conn is not None and not conn.closed:
+            conn.close()
 
     def __del__(self):
         self.close()

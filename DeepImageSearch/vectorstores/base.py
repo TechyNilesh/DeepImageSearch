@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """Abstract vector store interface."""
 
 from abc import ABC, abstractmethod

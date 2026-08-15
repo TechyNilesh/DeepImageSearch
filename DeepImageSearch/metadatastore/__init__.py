@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 from DeepImageSearch.metadatastore.base import ImageRecord, BaseMetadataStore
 from DeepImageSearch.metadatastore.json_store import JsonMetadataStore
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+# Copyright (c) 2021 Nilesh Verma
 """
 MCP (Model Context Protocol) server for DeepImageSearch.
 
@@ -13,7 +15,6 @@ Run with:
 import argparse
 import json
 import logging
-from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -39,11 +40,15 @@ def create_mcp_server(
         Device for inference.
     """
     try:
-        from mcp.server.fastmcp import FastMCP
+        # mcp >= 2.0 renamed FastMCP to MCPServer and moved it to mcp.server.mcpserver.
+        from mcp.server.mcpserver import MCPServer as _Server
     except ImportError:
-        raise ImportError(
-            "mcp is required for the MCP server. Install with: uv pip install 'DeepImageSearch[mcp]'"
-        )
+        try:
+            from mcp.server.fastmcp import FastMCP as _Server  # mcp 1.x
+        except ImportError:
+            raise ImportError(
+                "mcp is required for the MCP server. Install with: uv pip install 'DeepImageSearch[mcp]'"
+            )
 
     from DeepImageSearch.agents.tool_interface import ImageSearchTool
 
@@ -55,7 +60,7 @@ def create_mcp_server(
         device=device,
     )
 
-    mcp = FastMCP("DeepImageSearch")
+    mcp = _Server("DeepImageSearch")
 
     @mcp.tool()
     def search_images(query: str, k: int = 5, mode: str = "auto") -> str:
