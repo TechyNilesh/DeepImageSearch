@@ -21,7 +21,7 @@ Usage:
     engine.plot_similar_images("query.jpg")
 """
 
-__version__ = "3.0.2"
+__version__ = "3.0.3"
 
 # Must run before torch or faiss is imported below — see DeepImageSearch/_openmp.py
 # for why macOS needs this and what the permanent fix is.

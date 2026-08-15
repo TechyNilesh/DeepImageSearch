@@ -4,7 +4,7 @@ All notable changes to DeepImageSearch will be documented in this file.
 
 ---
 
-## [Unreleased]
+## [3.0.3] - 2026-08-16
 
 ### Fixed
 - **`index_type="ivf"` segfaulted the interpreter on every use.** Two causes:
