@@ -30,13 +30,17 @@ All notable changes to DeepImageSearch will be documented in this file.
 - `DeepImageSearch.__version__` now matches the packaged version (was `3.0.0`).
 
 ### Added
-- Test suite (`tests/`, 337 tests, 98% coverage) covering every module: loader,
+- Test suite (`tests/`, 353 tests, 98% coverage) covering every module: loader,
   metadata stores, all four vector stores, embedding backends, captioner, agent
   tools, the SearchEngine facade, and the v2 `Search_Setup` shim. No model
   downloads and no servers — heavy dependencies are faked or run in-process.
 - GitHub Actions CI: lint, tests on Python 3.10–3.13 across Linux/macOS/Windows
   with all extras installed and a 90% coverage floor, and a packaging check.
 - `CONTRIBUTING.md`, `CITATION.cff`, `.gitignore`.
+- Release workflow publishing to PyPI from a `v*` tag via Trusted
+  Publishing (OIDC, no stored token), guarded by a tag/version match check.
+- `scripts/bump_version.py`, which updates all three places the version is
+  recorded and fails loudly if any of them stops matching.
 - `# SPDX-License-Identifier: MIT` header on every source file.
 
 ### Removed

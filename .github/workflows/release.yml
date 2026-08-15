@@ -1,0 +1,77 @@
+name: Release
+
+# Publishes to PyPI when a v* tag is pushed:
+#     python scripts/bump_version.py 3.0.3
+#     git commit -am "Bump version to 3.0.3" && git push
+#     git tag v3.0.3 && git push --tags
+#
+# Authentication uses PyPI Trusted Publishing (OIDC) — no API token is stored
+# in GitHub secrets. One-time setup on PyPI, under the project's
+# "Publishing" settings, add a trusted publisher with:
+#     Owner:       TechyNilesh
+#     Repository:  DeepImageSearch
+#     Workflow:    release.yml
+#     Environment: pypi
+# Then create a GitHub environment named "pypi" (Settings > Environments).
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build and verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check the tag matches the packaged version
+        # Publishing 3.0.2 from a v3.0.3 tag is unrecoverable — PyPI does not
+        # allow reuploading a version — so fail before the build instead.
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          tag_version="${GITHUB_REF_NAME#v}"
+          pkg_version="$(python -c 'import tomllib;print(tomllib.load(open("pyproject.toml","rb"))["project"]["version"])')"
+          echo "tag=$tag_version  pyproject=$pkg_version"
+          if [ "$tag_version" != "$pkg_version" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match pyproject version $pkg_version. Run scripts/bump_version.py first."
+            exit 1
+          fi
+
+      - name: Install build tooling
+        run: pip install build twine
+
+      - name: Build distributions
+        run: python -m build
+
+      - name: Check package metadata
+        run: twine check dist/*
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write # required for trusted publishing
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1

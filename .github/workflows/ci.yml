@@ -20,7 +20,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install ruff
-      - run: ruff check DeepImageSearch tests
+      - run: ruff check DeepImageSearch tests scripts
 
   test:
     name: Test (${{ matrix.os }}, py${{ matrix.python-version }})

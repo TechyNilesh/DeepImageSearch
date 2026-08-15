@@ -76,6 +76,32 @@ To add one:
 - Version numbers live in `pyproject.toml`, `DeepImageSearch/__init__.py`, and
   `CITATION.cff`; `tests/test_package.py` asserts all three agree.
 
+## Releasing (maintainers)
+
+Releases publish to PyPI from a `v*` tag via
+[Trusted Publishing](https://docs.pypi.org/trusted-publishers/) — no API token
+lives in GitHub secrets.
+
+```bash
+python scripts/bump_version.py 3.0.3     # updates all three version locations
+# add a 3.0.3 section to CHANGELOG.md
+git commit -am "Bump version to 3.0.3"
+git tag v3.0.3
+git push && git push --tags              # triggers .github/workflows/release.yml
+```
+
+The workflow refuses to build if the tag does not match the version in
+`pyproject.toml`, because a wrong version cannot be re-uploaded to PyPI.
+
+One-time setup, if it has not been done yet:
+
+1. On PyPI, under the project's **Publishing** settings, add a trusted publisher —
+   owner `TechyNilesh`, repository `DeepImageSearch`, workflow `release.yml`,
+   environment `pypi`.
+2. In GitHub **Settings → Environments**, create an environment named `pypi`.
+   Adding a required reviewer there gives you a manual approval gate before any
+   upload.
+
 ## Reporting bugs
 
 Open an issue at https://github.com/TechyNilesh/DeepImageSearch/issues with your
