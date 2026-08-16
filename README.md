@@ -360,13 +360,3 @@ If you use DeepImageSearch in your Research/Product, please cite:
 ### Please do STAR the repository, if it helped you in any way.
 
 **Feel free to give suggestions, report bugs and contribute.**
-
-## Star History
-
-<a href="https://www.star-history.com/?repos=TechyNilesh%2FDeepImageSearch&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/image?repos=TechyNilesh/DeepImageSearch&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/image?repos=TechyNilesh/DeepImageSearch&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/image?repos=TechyNilesh/DeepImageSearch&type=date&legend=top-left" />
- </picture>
-</a>
